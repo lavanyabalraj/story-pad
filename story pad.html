@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Story Note pad</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .navbar {
+            background-color: rgb(101, 123, 110);
+            padding: 10px;
+        }
+        .navbar h1 {
+            color: white;
+        }
+        h5 {
+            font-style: italic;
+        }
+        .container {
+            padding: 5px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+        .classcontainer {
+            padding: 15px;
+            width: 25%;
+            background-color: rgb(34, 32, 32);
+            border-radius: 10px;
+            color: aliceblue;
+            margin: 30px;
+            display: inline-block;
+        }
+        .classcontainer h2 {
+            color: rgb(42, 165, 126);
+        }
+        .classcontainer button {
+            background-color: rgb(173, 44, 44);
+            border-radius: 10px;
+            padding: 5px 10px;
+            color: aliceblue;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+        .addbutton {
+            background-color: rgb(254, 48, 48);
+            color: black;
+            border-radius: 100px;
+            padding: 16px 28px;
+            font-size: 40px;
+            border: none;
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            cursor: pointer;
+        }
+        .overlay {
+            background-color: rgb(15, 20, 24);
+            opacity: 0.8;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            display: none;
+        }
+        .popupbox {
+            background-color: rgb(42, 165, 104);
+            width: 40%;
+            padding: 40px;
+            border-radius: 10px;
+            position: absolute;
+            top: 20%;
+            left: 30%;
+            z-index: 2;
+            display: none;
+        }
+        .popupbox input, .popupbox textarea {
+            background-color: transparent;
+            border: none;
+            width: 100%;
+            margin: 5px;
+            padding: 5px;
+            font-size: 20px;
+        }
+        .popupbox input {
+            border-bottom: solid black 2px;
+        }
+        .popupbox textarea {
+            border: solid black 2px;
+        }
+        .popupbox input::placeholder,
+        .popupbox textarea::placeholder {
+            color: black;
+        }
+        .popupbox button {
+            background-color: black;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 100px;
+            color: aliceblue;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .popupbox input:focus,
+        .popupbox textarea:focus {
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <h1>Ullor Artist</h1>
+    </div>
+    <div class="container" id="container">
+        <div class="classcontainer">
+            <h2>Birthday Event</h2>
+            <h5>02.02.2025</h5>
+            <p>very extreme happiness in my eyes.I dont know how to show my emotions at that time </p>
+            <button onclick="handleDelete(event)">Delete</button>
+        </div>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+    <div class="popupbox" id="popupbox">
+        <h2>Place Your Order</h2>
+        <form>
+            <input type="text" id="Name" placeholder="Event" />
+            <input type="text" id="Size" placeholder="Date" />
+            <textarea id="Address" placeholder="Tell few words"></textarea>
+            <button type="button" id="new">Add</button>
+            <button type="button" id="cancel">Delete</button>
+        </form>
+    </div>
+    <button class="addbutton" id="add">+</button>
+
+    <script>
+        const overlay = document.getElementById("overlay");
+        const popupbox = document.getElementById("popupbox");
+        const addBtn = document.getElementById("add");
+        const cancelBtn = document.getElementById("cancel");
+        const newBtn = document.getElementById("new");
+        const container = document.getElementById("container");
+
+        addBtn.addEventListener("click", () => {
+            overlay.style.display = "block";
+            popupbox.style.display = "block";
+        });
+
+        cancelBtn.addEventListener("click", function(event) {
+            event.preventDefault();
+            overlay.style.display = "none";
+            popupbox.style.display = "none";
+        });
+
+        newBtn.addEventListener("click", function() {
+            const nameVal = document.getElementById("Name").value;
+            const sizeVal = document.getElementById("Size").value;
+            const addressVal = document.getElementById("Address").value;
+
+            const div = document.createElement("div");
+            div.setAttribute("class", "classcontainer");
+            div.innerHTML = `
+                <h2>${nameVal}</h2>
+                <h5>${sizeVal}</h5>
+                <p>${addressVal}</p>
+                <button onclick="handleDelete(event)">Delete</button>
+            `;
+            container.append(div);
+            overlay.style.display = "none";
+            popupbox.style.display = "none";
+        });
+
+        function handleDelete(event) {
+            event.target.parentElement.remove();
+        }
+    </script>
+</body>
+</html>
